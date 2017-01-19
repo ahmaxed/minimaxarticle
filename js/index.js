@@ -1,7 +1,11 @@
 // initilizing some variables
+// in total "iterations: 549946" iterations on an empty board
+//"iterations: 59705" if played second
 
 // this is the board flattened and filled with some values to easier asses the Artificial Inteligence.
-var board = ["P","C","C","P",4 ,5 ,6 ,"C","P"];
+var board = ["P",1 ,"C","C",4 ,"C", 6 ,"P","P"];
+
+//var board = ["P",1 ,2,3,4 ,5, 6 ,7,8];
 /*
 lets visualize the above game state
 
@@ -17,52 +21,48 @@ var huPlayer = "P";
 
 // computer Player
 var aiPlayer = "C";
-var plus = 0;
-var min = 0;
 
 // how many times the minimax function has run
 var iter = 0;
-var aialgor = minimax(board, aiPlayer);
-console.log(aialgor);
-console.log(iter);
 
-function minimax(reboard, player){
+
+var results = minimax(board, aiPlayer);
+
+//loging the results
+console.log("index: " + results.index);
+console.log("iterations: " + iter);
+
+
+// the main minimax function
+function minimax(reboard, player){ 
+  //console.log(reboard);
   iter++;
   let array = avail(reboard);
   if (winning(reboard, huPlayer)){
-    min++;
      return {score:-10};
   }
 	else if (winning(reboard, aiPlayer)){
-    plus++;
     return {score:10};
 	}
   else if (array.length === 0){
   	return {score:0};
   }
   
-
   var moves = [];
   for (var i = 0; i < array.length; i++){
     var move = {};
   	move.index = reboard[array[i]];
-    // need to work on a copy of the board;
+    
+// need to work on a copy of the board;
     reboard[array[i]] = player;
-    /*
-      console.log("array: " + array);
-      console.log("reboard: " + reboard);
-      console.log("i: " + i);
-      */
     if (player == aiPlayer){
       var g = minimax(reboard, huPlayer);
-      //console.log("minimax: "+g);
+      
       move.score = g.score;
-      //console.log("move score" + move.score);
     }
     else{
       var g = minimax(reboard, aiPlayer);
-      //console.log("minimax: "+g);
-       move.score = g.score;
+      move.score = g.score;
     }
     reboard[array[i]] = move.index;
     moves.push(move);
@@ -86,15 +86,13 @@ function minimax(reboard, player){
       }
     }
   }
-	//console.log("hello");
   return moves[bestMove]; 
 }
 
-//available spots
+//available spots on the board
 function avail(reboard){
   return reboard.filter(s => s != "P" && s != "C");
 }
-
 
 // winning combinations
 function winning(board, player){
