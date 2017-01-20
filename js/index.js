@@ -63,7 +63,8 @@ function minimax(newBoard, player){
 
   //available spots
   let availSpots = filterAvail(newBoard);
-  console.log("empty: " + availSpots);
+
+  // checks for the terminal states such as win, lose, and tie and returning a value accordingly
   if (winning(newBoard, huPlayer)){
      return {score:-10};
   }
@@ -79,7 +80,7 @@ function minimax(newBoard, player){
     var move = {};
   	move.index = newBoard[availSpots[i]];
 
-// need to work on a copy of the board;
+    // need to work on a copy of the board;
     newBoard[availSpots[i]] = player;
     if (player == coPlayer){
       var result = minimax(newBoard, huPlayer);
@@ -93,6 +94,7 @@ function minimax(newBoard, player){
     moves.push(move);
   }
 
+// if it is the computer's turn loop over the moves and choose the move with the highest score
   var bestMove;
   if(player === coPlayer){
     var bestScore = -10000;
@@ -103,6 +105,8 @@ function minimax(newBoard, player){
       }
     }
   }else{
+    
+// else loop over the moves and choose the move with the lowest score
     var bestScore = 10000;
     for(var i = 0; i < moves.length; i++){
       if(moves[i].score < bestScore){
@@ -111,6 +115,8 @@ function minimax(newBoard, player){
       }
     }
   }
+
+// return the chosen move (object) from the array to the higher depth
   return moves[bestMove];
 }
 
