@@ -9,11 +9,36 @@ var board = ["P",1 ,"C","C",4 ,"C", 6 ,"P","P"];
 /*
 lets visualize the above game state
 
-X | O | O
----------
-X |   |  
----------
-  | X | O
+                                   O |   | X
+                                   ---------
+                                   X |   | X
+                                   ---------
+                                     | O | O
+
+                             //       ||        \\
+
+                O | X | X          O |   | X        O |   | X
+                ---------          ---------        ---------
+                X |   | X          X | X | X        X |   | X
+                ---------          ---------        ---------
+                  | O | O            | O | O        X | O | O
+
+              //          \\                     //          \\
+
+        O | X | X          O | X | X        O | O | X       O |   | X
+        ---------          ---------        ---------       ---------
+        X | O | X          X |   | X        X |   | X       X | O | X
+        ---------          ---------        ---------       ---------
+          | O | O          O | O | O        X | O | O       X | O | O
+
+                                        //
+
+                                   O | O | X
+                                   ---------
+                                   X | X | X
+                                   ---------
+                                   O | O | O
+
 */
 
 // human player
@@ -34,7 +59,7 @@ console.log("iterations: " + iter);
 
 
 // the main minimax function
-function minimax(reboard, player){ 
+function minimax(reboard, player){
   //console.log(reboard);
   iter++;
   let array = avail(reboard);
@@ -47,17 +72,17 @@ function minimax(reboard, player){
   else if (array.length === 0){
   	return {score:0};
   }
-  
+
   var moves = [];
   for (var i = 0; i < array.length; i++){
     var move = {};
   	move.index = reboard[array[i]];
-    
+
 // need to work on a copy of the board;
     reboard[array[i]] = player;
     if (player == aiPlayer){
       var g = minimax(reboard, huPlayer);
-      
+
       move.score = g.score;
     }
     else{
@@ -67,7 +92,7 @@ function minimax(reboard, player){
     reboard[array[i]] = move.index;
     moves.push(move);
   }
-  
+
   var bestMove;
   if(player === aiPlayer){
     var bestScore = -10000;
@@ -86,7 +111,7 @@ function minimax(reboard, player){
       }
     }
   }
-  return moves[bestMove]; 
+  return moves[bestMove];
 }
 
 //available spots on the board
