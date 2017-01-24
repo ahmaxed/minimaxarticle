@@ -2,10 +2,9 @@
 // in total "iterations: 549946" iterations on an empty board
 //"iterations: 59705" if played second
 
-// this is the board flattened and filled with some values to easier asses the Artificial Inteligence.
-var origBoard = ["P",1 ,"C","C",4 ,"C", 6 ,"P","P"];
 
-//var board = ["P",1 ,2,3,4 ,5, 6 ,7,8];
+
+
 /*
 lets visualize the above game state
 
@@ -40,63 +39,81 @@ lets visualize the above game state
                                    O | O | O
 
 */
-
 // human
-var huPlayer = "P";
-// computer
-var coPlayer = "C";
+var huPlayer = "O";
+// ai
+var aiPlayer = "X";
+
+// this is the board flattened and filled with some values to easier asses the Artificial Inteligence.
+var origBoard = ["O",1 ,"X","X",4 ,"X", 6 ,"O","O"];
+//var origBoard = [0,1 ,2,3,4 ,5, 6 ,7,8];
+
 
 // how many times the minimax function has run
-var iter = 0;
+var iteration = 0;
 
+var t0 = performance.now();
+var bestSpot = minimax(origBoard, aiPlayer);
+var t1 = performance.now();
+console.log('Took', (t1 - t0).toFixed(4), 'milliseconds to generate to run');
 // finding the ultimate play on the game that favors the computer
-var bestSpot = minimax(origBoard, coPlayer);
+
 
 //loging the results
 console.log("index: " + bestSpot.index);
-console.log("iterations: " + iter);
+console.log("iterations: " + iteration);
 
 // the main minimax function
 function minimax(newBoard, player){
   //console.log(newBoard);
-  iter++;
+  iteration++;
 
   //available spots
-  let availSpots = filterAvail(newBoard);
+  var availSpots = emptyIndexies(newBoard);
 
   // checks for the terminal states such as win, lose, and tie and returning a value accordingly
   if (winning(newBoard, huPlayer)){
      return {score:-10};
   }
-	else if (winning(newBoard, coPlayer)){
+	else if (winning(newBoard, aiPlayer)){
     return {score:10};
 	}
   else if (availSpots.length === 0){
   	return {score:0};
   }
 
+// an array to collect all the objects
   var moves = [];
+
+  // loop through available spots
   for (var i = 0; i < availSpots.length; i++){
+    //create an object for each and store the index of that spot that was stored as a number in the object's index key
     var move = {};
   	move.index = newBoard[availSpots[i]];
 
-    // need to work on a copy of the board;
+    // set the empty spot to the current player
     newBoard[availSpots[i]] = player;
-    if (player == coPlayer){
+
+    //if collect the score resulted from calling minimax on the opponent of the current player
+    if (player == aiPlayer){
       var result = minimax(newBoard, huPlayer);
       move.score = result.score;
     }
     else{
-      var result = minimax(newBoard, coPlayer);
+      var result = minimax(newBoard, aiPlayer);
       move.score = result.score;
     }
+
+    //reset the spot to empty
     newBoard[availSpots[i]] = move.index;
+
+    // push the object to the array
     moves.push(move);
   }
 
 // if it is the computer's turn loop over the moves and choose the move with the highest score
   var bestMove;
-  if(player === coPlayer){
+  if(player === aiPlayer){
     var bestScore = -10000;
     for(var i = 0; i < moves.length; i++){
       if(moves[i].score > bestScore){
@@ -105,7 +122,7 @@ function minimax(newBoard, player){
       }
     }
   }else{
-    
+
 // else loop over the moves and choose the move with the lowest score
     var bestScore = 10000;
     for(var i = 0; i < moves.length; i++){
@@ -121,8 +138,8 @@ function minimax(newBoard, player){
 }
 
 // returns the available spots on the board
-function filterAvail(board){
-  return  board.filter(s => s != "P" && s != "C");
+function emptyIndexies(board){
+  return  board.filter(s => s != "O" && s != "X");
 }
 
 // winning combinations using the board indexies for instace the first win could be 3 xes in a row
