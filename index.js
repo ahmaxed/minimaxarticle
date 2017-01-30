@@ -1,9 +1,3 @@
-// initilizing some variables
-// in total "iterations: 549946" iterations on an empty board
-//"iterations: 59705" if played second
-
-
-
 
 /*
 lets visualize the above game state
@@ -48,16 +42,11 @@ var aiPlayer = "X";
 var origBoard = ["O",1 ,"X","X",4 ,"X", 6 ,"O","O"];
 //var origBoard = [0,1 ,2,3,4 ,5, 6 ,7,8];
 
-
 // how many times the minimax function has run
 var iteration = 0;
 
-var t0 = performance.now();
-var bestSpot = minimax(origBoard, aiPlayer);
-var t1 = performance.now();
-console.log('Took', (t1 - t0).toFixed(4), 'milliseconds to generate to run');
 // finding the ultimate play on the game that favors the computer
-
+var bestSpot = minimax(origBoard, aiPlayer);
 
 //loging the results
 console.log("index: " + bestSpot.index);
