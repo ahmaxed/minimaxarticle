@@ -56,7 +56,7 @@ console.log("function calls: " + fc);
 function minimax(newBoard, player){
   //add one to function calls
   fc++;
-
+  
   //available spots
   var availSpots = emptyIndexies(newBoard);
 
