@@ -42,20 +42,20 @@ var aiPlayer = "X";
 var origBoard = ["O",1 ,"X","X",4 ,"X", 6 ,"O","O"];
 //var origBoard = [0,1 ,2,3,4 ,5, 6 ,7,8];
 
-// how many times the minimax function has run
-var iteration = 0;
+//keeps count of function calls
+var fc = 0;
 
 // finding the ultimate play on the game that favors the computer
 var bestSpot = minimax(origBoard, aiPlayer);
 
 //loging the results
 console.log("index: " + bestSpot.index);
-console.log("iterations: " + iteration);
+console.log("function calls: " + fc);
 
 // the main minimax function
 function minimax(newBoard, player){
-  //console.log(newBoard);
-  iteration++;
+  //add one to function calls
+  fc++;
 
   //available spots
   var availSpots = emptyIndexies(newBoard);
